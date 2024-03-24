@@ -1,9 +1,12 @@
 package com.task.DAOimplement;
 
+import java.util.List;
+
 import org.hibernate.Session;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import com.task.DAO.UserDAO;
 import com.task.Entity.User;
@@ -48,6 +51,18 @@ public class UserDAOimplement implements UserDAO {
         return user;
     }
 
+    @Override
+    public List<User> getAllUsers() {
+        List<User> users = null;
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "FROM User";
+            Query<User> query = session.createQuery(hql, User.class);
+            users = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
     @Override
     public void updateUser(User user) {
         Session session = sessionFactory.openSession();

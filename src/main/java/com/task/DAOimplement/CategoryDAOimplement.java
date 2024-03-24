@@ -1,8 +1,12 @@
 package com.task.DAOimplement;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
 import com.task.DAO.CategoryDAO;
 import com.task.Entity.Category;
 import com.task.util.HibernateUtil;
@@ -83,5 +87,17 @@ public class CategoryDAOimplement implements CategoryDAO {
         } finally {
             session.close();
         }
+    }
+    @Override
+    public List<Category> getAllCategories() {
+        List<Category> categories = null;
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "FROM Category";
+            Query<Category> query = session.createQuery(hql, Category.class);
+            categories = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return categories;
     }
 }

@@ -1,12 +1,15 @@
 package com.task.DAOimplement;
+
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import com.task.DAO.CommentDAO;
 import com.task.Entity.Comment;
 import com.task.util.HibernateUtil;
-
 
 public class CommentDAOimplement implements CommentDAO {
     private SessionFactory sessionFactory;
@@ -48,6 +51,19 @@ public class CommentDAOimplement implements CommentDAO {
     }
 
     @Override
+    public List<Comment> getAllComments() {
+        List<Comment> comments = null;
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "FROM Comment";
+            Query<Comment> query = session.createQuery(hql, Comment.class);
+            comments = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return comments;
+    }
+
+    @Override
     public void updateComment(Comment comment) {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
@@ -84,5 +100,22 @@ public class CommentDAOimplement implements CommentDAO {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    public List<Comment> getCommentsByUserId(int userId) {
+        Session session = sessionFactory.openSession();
+        List<Comment> comments = null;
+        try {
+            String hql = "SELECT c FROM Comment c WHERE c.user.userId = :userId";
+            Query<Comment> query = session.createQuery(hql, Comment.class);
+            query.setParameter("userId", userId);
+            comments = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return comments;
     }
 }

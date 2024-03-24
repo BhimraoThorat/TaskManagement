@@ -5,6 +5,7 @@ import com.task.DAOimplement.CategoryDAOimplement;
 import com.task.Entity.Category;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class CategoryMain {
@@ -16,9 +17,10 @@ public class CategoryMain {
 			System.out.println("\nSelect an option:");
 			System.out.println("1. Add Category");
 			System.out.println("2. Retrieve Category");
-			System.out.println("3. Update Category");
-			System.out.println("4. Delete Category");
-			System.out.println("5. Back to main menu");
+			System.out.println("3. Retrieve All Category");
+			System.out.println("4. Update Category");
+			System.out.println("5. Delete Category");
+			System.out.println("6. Back to main menu");
 
 			int option;
 			try {
@@ -38,12 +40,16 @@ public class CategoryMain {
 				retrieveCategory(scanner);
 				break;
 			case 3:
+				retrieveAllCategory(scanner);
+				break;
+				
+			case 4:
 				updateCategory(scanner);
 				break;
-			case 4:
+			case 5:
 				deleteCategory(scanner);
 				break;
-			case 5:
+			case 6:
 				exit = true;
 				break;
 			default:
@@ -52,6 +58,8 @@ public class CategoryMain {
 			}
 		}
 	}
+
+	
 
 	private static void addCategory(Scanner scanner) {
 		System.out.println("Enter category name:");
@@ -81,6 +89,19 @@ public class CategoryMain {
 			System.out.println("Category not found.");
 		}
 	}
+	private static void retrieveAllCategory(Scanner scanner) {
+        List<Category> categories = categoryDAO.getAllCategories();
+        if (categories.isEmpty()) {
+            System.out.println("No categories found.");
+        } else {
+            System.out.println("All categories:");
+            System.out.printf("%-10s | %-20s\n", "Category ID", "Category Name");
+            System.out.println("-".repeat(35));
+            for (Category category : categories) {
+                System.out.printf("%-10d | %-20s\n", category.getCategoryId(), category.getCategoryName());
+            }
+        }
+    }
 
 	private static void updateCategory(Scanner scanner) {
 		System.out.println("Enter category ID to update:");

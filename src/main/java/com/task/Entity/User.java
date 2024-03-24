@@ -74,5 +74,10 @@ public class User {
 				+ ", toString()=" + super.toString() + "]";
 	}
 
+	public Object getCreatedAt() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
     
 }

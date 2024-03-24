@@ -92,5 +92,10 @@ public class Comment {
 				+ ", createdAt=" + createdAt + "]";
 	}
 
+	public Object getUserId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
     
 }

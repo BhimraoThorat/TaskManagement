@@ -1,6 +1,8 @@
 package com.task.main;
 import java.time.LocalDateTime;
+
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import com.task.DAO.CommentDAO;
@@ -26,9 +28,10 @@ public class CommentMain {
 			System.out.println("\nSelect an option:");
 			System.out.println("1. Add Comment");
 			System.out.println("2. Retrieve Comment");
-			System.out.println("3. Update Comment");
-			System.out.println("4. Delete Comment");
-			System.out.println("5. Back to main menu");
+			System.out.println("3. Retrieve All Comment");
+			System.out.println("4. Update Comment");
+			System.out.println("5. Delete Comment");
+			System.out.println("6. Back to main menu");
 
 			int option;
 			try {
@@ -48,12 +51,15 @@ public class CommentMain {
 				retrieveComment(scanner);
 				break;
 			case 3:
-				updateComment(scanner);
+				retrieveAllComment(scanner);
 				break;
 			case 4:
-				deleteComment(scanner);
+				updateComment(scanner);
 				break;
 			case 5:
+				deleteComment(scanner);
+				break;
+			case 6:
 				exit = true;
 				break;
 			default:
@@ -62,6 +68,13 @@ public class CommentMain {
 			}
 		}
 	}
+
+	
+
+
+	
+
+
 
 	private static void addComment(Scanner scanner) {
 		System.out.println("Enter task ID:");
@@ -126,6 +139,24 @@ public class CommentMain {
 			System.out.println("Comment not found.");
 		}
 	}
+	private static void retrieveAllComment(Scanner scanner) {
+	    List<Comment> comments = commentDAO.getAllComments();
+	    if (comments.isEmpty()) {
+	        System.out.println("No comments found.");
+	    } else {
+	        System.out.println("All comments:");
+	        System.out.printf("%-10s | %-20s | %-20s | %-20s | %-10s\n",
+	                "Comment ID", "Text", "User ID", "Task ID", "Created At");
+	        System.out.println("-".repeat(90));
+	        for (Comment comment : comments) {
+	            System.out.printf("%-10d | %-20s | %-20d | %-20d | %-10s\n",
+	                    comment.getCommentId(), comment.getCommentText(), comment.getUser().getUserId(),
+	                    comment.getTask().getTaskId(), comment.getCreatedAt());
+	        }
+	    }
+	}
+
+
 
 	private static void updateComment(Scanner scanner) {
 		System.out.println("Enter comment ID to update:");
